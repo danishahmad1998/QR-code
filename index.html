@@ -21,18 +21,27 @@
         let qrtext=document.getElementById("qrtext");
 
         function generateQr(){
-            if(qrtext.value.length>0){
-                qrimage.src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data="+qrtext.value;
-                imgbox.classList.add("show-img");
-            }
-            else{
-                qrtext.classList.add('error');
-                setTimeout(()=>{
-                    qrtext.classList.remove('error');
-                },2000)
-            }
-
+    let urlRegex = /^(https?|ftp|file):\/\/[-A-Za-z0-9+&@#/%?=~_|!:,.;]*[-A-Za-z0-9+&@#/%=~_|]$/;
+    if(qrtext.value.length > 0 ){
+        if(urlRegex.test(qrtext.value)){
+            // URL is valid, generate QR code
+            qrimage.src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data="+qrtext.value;
+            imgbox.classList.add("show-img");
+        } else {
+            // URL is not valid, show error
+            qrtext.classList.add('error');
+            setTimeout(()=>{
+                qrtext.classList.remove('error');
+            },2000)
         }
+    } else {
+        // Input field is empty, show error
+        qrtext.classList.add('error');
+        setTimeout(()=>{
+            qrtext.classList.remove('error');
+        },2000)
+    }
+}
     </script>
   </body>
 </html>
